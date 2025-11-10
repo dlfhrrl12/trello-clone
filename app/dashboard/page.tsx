@@ -1,9 +1,34 @@
 "use client";
 import Navbar from "@/components/navbar";
+import { Button } from "@/components/ui/button";
+import { useBoards } from "@/lib/hooks/useBoards";
 import { useUser } from "@clerk/nextjs";
+import { Loader2, Plus } from "lucide-react";
 
 const DashBoard = () => {
   const { user } = useUser();
+  const { createBoard, boards, loading, error } = useBoards();
+  const handleCreateBoard = async () => {
+    await createBoard({ title: "New Board" });
+  };
+
+  if (loading) {
+    return (
+      <div>
+        <Loader2 /> <span>Loading your boards</span>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div>
+        <h2>Error loading boards</h2>
+        <p>{error}</p>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
@@ -16,6 +41,11 @@ const DashBoard = () => {
           <p className="text-gray-600">
             Here's What's happening with your boards today.
           </p>
+
+          <Button className="w-full sm:w-auto" onClick={handleCreateBoard}>
+            <Plus className="h-4 w-4 mr-2" />
+            Create Board
+          </Button>
         </div>
       </main>
     </div>
