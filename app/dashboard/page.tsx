@@ -13,11 +13,9 @@ import { Input } from "@/components/ui/input";
 import { useBoards } from "@/lib/hooks/useBoards";
 import { useUser } from "@clerk/nextjs";
 import {
-  Divide,
   Filter,
   Grid3X3,
   List,
-  Loader2,
   Plus,
   Rocket,
   Search,
