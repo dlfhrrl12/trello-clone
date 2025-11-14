@@ -8,7 +8,6 @@ type SupabaseContext = {
   supabase: SupabaseClient | null;
   isLoaded: boolean;
 };
-
 const Context = createContext<SupabaseContext>({
   supabase: null,
   isLoaded: false,
@@ -29,7 +28,7 @@ export default function SupabaseProvider({
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
       {
-        accessToken: async () => session?.getToken() ?? null,
+        accessToken: () => session?.getToken(),
       }
     );
 
@@ -39,7 +38,8 @@ export default function SupabaseProvider({
 
   return (
     <Context.Provider value={{ supabase, isLoaded }}>
-      {!isLoaded ? <div>Loading...</div> : children}
+      {/* {!isLoaded ? <div> Loading...</div> : children} */}
+      {children}
     </Context.Provider>
   );
 }
@@ -47,7 +47,7 @@ export default function SupabaseProvider({
 export const useSupabase = () => {
   const context = useContext(Context);
   if (context === undefined) {
-    throw new Error("useSupabase must be used within a SupabaseProvider");
+    throw new Error("useSupabase needs to be inside the provider");
   }
 
   return context;
